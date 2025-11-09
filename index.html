@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini E-Commerce</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    .items {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    .item {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      width: 180px;
+      padding: 15px;
+      text-align: center;
+    }
+    .item img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    button {
+      background-color: #0078d4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    #response {
+      margin-top: 30px;
+      font-weight: bold;
+      color: #0078d4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fresh Market</h1>
+  <div class="items">
+    <div class="item">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Cucumber.jpg" alt="Cucumber" />
+      <h3>Cucumber</h3>
+      <button onclick="buyItem('cucumber')">Buy</button>
+    </div>
+    <div class="item">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Bright_red_tomato_and_cross_section02.jpg" alt="Tomato" />
+      <h3>Tomato</h3>
+      <button onclick="buyItem('tomato')">Buy</button>
+    </div>
+    <div class="item">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Carrots_of_many_colors.jpg" alt="Carrot" />
+      <h3>Carrot</h3>
+      <button onclick="buyItem('carrot')">Buy</button>
+    </div>
+  </div>
+
+  <div id="response"></div>
+
+  <script>
+    async function buyItem(item) {
+      document.getElementById('response').innerText = "Processing purchase for " + item + "...";
+
+      try {
+        // Replace this with your backend VM’s private or public endpoint:
+        const backendUrl = "http://<your-backend-vm-private-or-public-ip>/api/buy";
+
+        const res = await fetch(backendUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ item })
+        });
+
+        const data = await res.json();
+        document.getElementById('response').innerText =
+          `Backend Response: ${data.message || JSON.stringify(data)}`;
+      } catch (err) {
+        document.getElementById('response').innerText =
+          "Error contacting backend: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
